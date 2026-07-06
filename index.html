@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mohamed Diallo — Backend & DevOps Engineer</title>
+<meta name="description" content="Backend & DevOps Engineer in Dakar, Senegal. I architect distributed systems serving 10,000+ users and build products that tell stories.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#151210;
+  --bg2:#1c1917;
+  --surface:#292524;
+  --border:rgba(250,250,249,.09);
+  --text:#faf9f7;
+  --muted:#a8a29e;
+  --dim:#78716c;
+  --terra:#e4552b;
+  --terra-deep:#c2410c;
+  --gold:#d97c1a;
+  --serif:'Playfair Display',serif;
+  --sans:'Inter',sans-serif;
+  --mono:'JetBrains Mono',monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+html,body{background:var(--bg);color:var(--text);font-family:var(--sans);overflow-x:hidden}
+body{font-weight:300;line-height:1.6;-webkit-font-smoothing:antialiased}
+::selection{background:var(--terra);color:#fff}
+::-webkit-scrollbar{width:10px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:#3f3a36;border-radius:5px}
+::-webkit-scrollbar-thumb:hover{background:var(--terra-deep)}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+
+/* ---------- noise overlay ---------- */
+.noise{position:fixed;inset:-50%;width:200%;height:200%;pointer-events:none;z-index:2000;opacity:.05;
+background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+animation:grain 8s steps(10) infinite}
+@keyframes grain{
+  0%,100%{transform:translate(0,0)}10%{transform:translate(-5%,-10%)}20%{transform:translate(-15%,5%)}
+  30%{transform:translate(7%,-25%)}40%{transform:translate(-5%,25%)}50%{transform:translate(-15%,10%)}
+  60%{transform:translate(15%,0)}70%{transform:translate(0,15%)}80%{transform:translate(3%,35%)}90%{transform:translate(-10%,10%)}
+}
+
+/* ---------- custom cursor ---------- */
+.cursor-dot,.cursor-ring{position:fixed;top:0;left:0;pointer-events:none;z-index:3000;border-radius:50%;transform:translate(-50%,-50%)}
+.cursor-dot{width:8px;height:8px;background:var(--terra)}
+.cursor-ring{width:36px;height:36px;border:1px solid rgba(228,85,43,.5);transition:width .3s,height .3s,background .3s,border-color .3s}
+.cursor-ring.is-hover{width:64px;height:64px;background:rgba(228,85,43,.12);border-color:transparent}
+@media (hover:none){.cursor-dot,.cursor-ring{display:none}}
+
+/* ---------- preloader ---------- */
+#loader{position:fixed;inset:0;background:var(--bg);z-index:5000;display:flex;align-items:flex-end;justify-content:space-between;padding:5vh 5vw;transition:transform 1s cubic-bezier(.77,0,.18,1)}
+#loader.done{transform:translateY(-100%)}
+#loader .word{font-family:var(--serif);font-style:italic;font-size:clamp(1.4rem,3vw,2.4rem);color:var(--muted);overflow:hidden}
+#loader .word span{display:inline-block;animation:rise 1s cubic-bezier(.19,1,.22,1) both}
+#loader .pct{font-family:var(--mono);font-size:clamp(4rem,12vw,10rem);line-height:1;color:var(--text)}
+@keyframes rise{from{transform:translateY(110%)}to{transform:translateY(0)}}
+
+/* ---------- layout ---------- */
+.wrap{width:min(1400px,92vw);margin:0 auto}
+section{position:relative;padding:14vh 0}
+.sec-head{display:flex;align-items:baseline;gap:1.5rem;margin-bottom:8vh;border-bottom:1px solid var(--border);padding-bottom:2rem}
+.sec-num{font-family:var(--mono);font-size:.85rem;color:var(--terra)}
+.sec-title{font-family:var(--serif);font-weight:500;font-size:clamp(2.2rem,5vw,4.2rem);line-height:1.05}
+.sec-title em{font-style:italic;color:var(--terra)}
+
+/* reveal helpers */
+.rv{opacity:0;transform:translateY(50px)}
+.line-mask{overflow:hidden;display:block}
+.line-mask>span{display:block}
+
+/* ---------- nav ---------- */
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:1.4rem 4vw;display:flex;align-items:center;justify-content:space-between;mix-blend-mode:difference}
+nav .logo{font-family:var(--serif);font-style:italic;font-weight:700;font-size:1.3rem;letter-spacing:.02em}
+nav .links{display:flex;gap:2.2rem;font-size:.8rem;letter-spacing:.14em;text-transform:uppercase}
+nav .links a{position:relative;padding:.2rem 0;color:#fff}
+nav .links a::after{content:"";position:absolute;left:0;bottom:0;height:1px;width:100%;background:#fff;transform:scaleX(0);transform-origin:right;transition:transform .4s cubic-bezier(.77,0,.18,1)}
+nav .links a:hover::after{transform:scaleX(1);transform-origin:left}
+@media(max-width:760px){nav .links{display:none}}
+
+.avail{position:fixed;bottom:1.4rem;left:4vw;z-index:1000;display:flex;align-items:center;gap:.55rem;font-family:var(--mono);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);background:rgba(21,18,16,.7);backdrop-filter:blur(8px);border:1px solid var(--border);border-radius:99px;padding:.5rem .95rem}
+.avail .dot{width:7px;height:7px;border-radius:50%;background:#4ade80;animation:pulse 2s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(74,222,128,.5)}70%{box-shadow:0 0 0 9px rgba(74,222,128,0)}100%{box-shadow:0 0 0 0 rgba(74,222,128,0)}}
+
+/* ---------- hero ---------- */
+#hero{min-height:100svh;display:flex;flex-direction:column;justify-content:center;padding:16vh 0 8vh}
+.hero-eyebrow{display:flex;align-items:center;gap:1rem;font-family:var(--mono);font-size:clamp(.7rem,1.2vw,.85rem);letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:3vh}
+.hero-eyebrow::before{content:"";width:48px;height:1px;background:var(--terra)}
+h1{font-family:var(--serif);font-weight:600;font-size:clamp(3.2rem,12.5vw,11.5rem);line-height:.95;letter-spacing:-.02em}
+h1 .row{display:block;overflow:hidden}
+h1 .row>span{display:block}
+h1 em{font-style:italic;font-weight:500;color:transparent;-webkit-text-stroke:1.5px var(--terra)}
+.hero-bottom{display:flex;justify-content:space-between;align-items:flex-end;gap:3rem;margin-top:7vh;flex-wrap:wrap}
+.hero-desc{max-width:44ch;font-size:clamp(1rem,1.4vw,1.25rem);color:var(--muted)}
+.hero-desc strong{color:var(--text);font-weight:500}
+/* ---------- 3D avatar ---------- */
+.avatar-stage{width:min(320px,62vw);height:min(320px,62vw);position:relative;flex-shrink:0;opacity:0;animation:fadeAv 1.2s .4s ease forwards}
+@keyframes fadeAv{to{opacity:1}}
+/* 2D fallback avatar (if WebGL/CDN unavailable) */
+.av2d{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
+.av2d .face{width:72%;height:72%;border-radius:48% 48% 46% 46%;background:radial-gradient(circle at 38% 30%,#8a5633,#6f4326 55%,#57341d);position:relative;box-shadow:0 30px 60px -20px rgba(0,0,0,.7),0 0 70px -18px rgba(228,85,43,.35)}
+.av2d .hairc{position:absolute;top:-4%;left:6%;right:6%;height:38%;border-radius:50% 50% 20% 20%;background:#161210}
+.av2d .eye{position:absolute;top:38%;width:19%;height:19%;border-radius:50%;background:#f5f0ea;display:flex;align-items:center;justify-content:center;border:3px solid var(--terra)}
+.av2d .eye.l{left:17%}.av2d .eye.r{right:17%}
+.av2d .pupil{width:38%;height:38%;border-radius:50%;background:#14100d;transition:transform .08s linear}
+.av2d .bridge2{position:absolute;top:46%;left:38%;right:38%;height:3px;background:var(--terra)}
+.av2d .smile2{position:absolute;bottom:16%;left:50%;width:34%;height:17%;transform:translateX(-50%);border:4px solid #14100d;border-top:none;border-left-color:transparent;border-right-color:transparent;border-radius:0 0 50% 50%}
+.avatar-stage::before{content:"";position:absolute;inset:8%;border-radius:50%;background:radial-gradient(circle,rgba(228,85,43,.16),transparent 68%);filter:blur(10px)}
+.avatar-stage canvas{position:relative;z-index:1}
+.avatar-stage .tag3d{position:absolute;bottom:-.4rem;left:50%;transform:translateX(-50%);font-family:var(--mono);font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;color:var(--dim);white-space:nowrap;z-index:2}
+.scroll-cue{font-family:var(--mono);font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);display:flex;align-items:center;gap:.8rem}
+.scroll-cue::after{content:"";width:1px;height:56px;background:linear-gradient(var(--terra),transparent);animation:drip 1.8s ease-in-out infinite}
+@keyframes drip{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+
+/* ---------- stats ---------- */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--border)}
+.stat{padding:3rem 2rem 3rem 0;border-right:1px solid var(--border)}
+.stat:last-child{border-right:none}
+.stat b{display:block;font-family:var(--serif);font-weight:600;font-size:clamp(2.4rem,4.5vw,4rem);line-height:1;color:var(--text)}
+.stat b i{font-style:italic;color:var(--terra)}
+.stat span{font-family:var(--mono);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);display:block;margin-top:.9rem}
+@media(max-width:900px){.stats{grid-template-columns:repeat(2,1fr)}.stat:nth-child(2){border-right:none}.stat{border-bottom:1px solid var(--border)}.stat:nth-child(n+3){border-bottom:none}}
+
+/* ---------- marquee ---------- */
+.marquee{overflow:hidden;border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:1.6rem 0;background:var(--bg2)}
+.marquee .track{display:flex;gap:3.5rem;width:max-content;animation:scrollX 28s linear infinite}
+.marquee span{font-family:var(--serif);font-style:italic;font-size:clamp(1.2rem,2.4vw,2rem);color:var(--dim);white-space:nowrap;display:flex;align-items:center;gap:3.5rem}
+.marquee span::after{content:"✦";font-size:.8em;color:var(--terra)}
+@keyframes scrollX{to{transform:translateX(-50%)}}
+
+/* ---------- featured: Demb ---------- */
+#demb{background:linear-gradient(180deg,var(--bg) 0%,#211511 45%,var(--bg) 100%)}
+.demb-badge{display:inline-flex;align-items:center;gap:.6rem;font-family:var(--mono);font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);border:1px solid rgba(217,124,26,.4);border-radius:99px;padding:.45rem 1rem;margin-bottom:2.5rem}
+.demb-badge .dot{width:6px;height:6px;border-radius:50%;background:var(--gold);animation:pulse 2s infinite}
+.demb-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:6vw;align-items:center}
+@media(max-width:960px){.demb-grid{grid-template-columns:1fr}}
+.demb-name{font-family:var(--serif);font-weight:700;font-size:clamp(4rem,11vw,9.5rem);line-height:.9;letter-spacing:-.02em}
+.demb-name em{font-style:italic;color:var(--terra)}
+.demb-sub{font-family:var(--mono);font-size:.8rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:1.6rem 0 2.2rem}
+.demb-copy{color:var(--muted);font-size:clamp(1rem,1.3vw,1.15rem);max-width:52ch}
+.demb-copy strong{color:var(--text);font-weight:500}
+.demb-feats{margin:2.8rem 0;display:flex;flex-direction:column}
+.demb-feats .f{display:flex;gap:1.4rem;align-items:baseline;padding:1.1rem 0;border-top:1px solid var(--border)}
+.demb-feats .f:last-child{border-bottom:1px solid var(--border)}
+.demb-feats .n{font-family:var(--mono);font-size:.75rem;color:var(--terra)}
+.demb-feats h4{font-weight:500;font-size:1rem;color:var(--text)}
+.demb-feats p{font-size:.9rem;color:var(--dim)}
+.chipset{display:flex;flex-wrap:wrap;gap:.6rem}
+.chip{font-family:var(--mono);font-size:.72rem;letter-spacing:.05em;color:var(--muted);border:1px solid var(--border);border-radius:99px;padding:.42rem .95rem;transition:.3s}
+.chip:hover{border-color:var(--terra);color:var(--terra)}
+
+/* phone mockup */
+.phone-scene{display:flex;justify-content:center;perspective:1200px}
+.phone{width:min(320px,80vw);aspect-ratio:9/19;background:#0e0c0b;border:1px solid #3a332e;border-radius:44px;padding:12px;box-shadow:0 60px 120px -30px rgba(0,0,0,.8),0 0 90px -20px rgba(228,85,43,.25);transform:rotateY(-8deg) rotateX(4deg)}
+.screen{width:100%;height:100%;border-radius:34px;background:linear-gradient(165deg,#2a1c14,#1c1917 60%);overflow:hidden;display:flex;flex-direction:column;position:relative}
+.screen .sb{display:flex;justify-content:space-between;padding:14px 22px 0;font-family:var(--mono);font-size:.6rem;color:var(--dim)}
+.screen .app-t{font-family:var(--serif);font-style:italic;font-weight:700;font-size:1.5rem;padding:22px 22px 4px;color:var(--text)}
+.screen .app-s{font-family:var(--mono);font-size:.55rem;letter-spacing:.16em;text-transform:uppercase;color:var(--terra);padding:0 22px 16px}
+.fig-card{margin:0 18px 12px;border-radius:18px;padding:18px;background:linear-gradient(140deg,rgba(228,85,43,.32),rgba(146,64,14,.16));border:1px solid rgba(228,85,43,.28)}
+.fig-card.alt{background:linear-gradient(140deg,rgba(217,124,26,.22),rgba(41,37,36,.5));border-color:rgba(217,124,26,.2)}
+.fig-card .era{font-family:var(--mono);font-size:.52rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
+.fig-card h5{font-family:var(--serif);font-size:1.05rem;font-weight:600;color:var(--text);margin:.35rem 0 .2rem}
+.fig-card p{font-size:.62rem;color:var(--muted);line-height:1.5}
+.audio-bar{margin-top:auto;display:flex;align-items:center;gap:12px;background:rgba(14,12,11,.85);backdrop-filter:blur(6px);border-top:1px solid var(--border);padding:13px 18px}
+.audio-bar .play{width:34px;height:34px;min-width:34px;border-radius:50%;background:var(--terra);display:flex;align-items:center;justify-content:center}
+.audio-bar .play::after{content:"";border-style:solid;border-width:6px 0 6px 10px;border-color:transparent transparent transparent #fff;margin-left:2px}
+.audio-bar .meta{flex:1;min-width:0}
+.audio-bar .meta b{display:block;font-size:.62rem;font-weight:500;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.audio-bar .meta span{font-family:var(--mono);font-size:.52rem;color:var(--dim)}
+.wavebars{display:flex;align-items:flex-end;gap:2.5px;height:18px}
+.wavebars i{width:2.5px;background:var(--terra);border-radius:2px;animation:wave 1s ease-in-out infinite}
+.wavebars i:nth-child(1){height:35%;animation-delay:0s}.wavebars i:nth-child(2){height:80%;animation-delay:.15s}
+.wavebars i:nth-child(3){height:55%;animation-delay:.3s}.wavebars i:nth-child(4){height:95%;animation-delay:.45s}
+.wavebars i:nth-child(5){height:45%;animation-delay:.6s}
+@keyframes wave{0%,100%{transform:scaleY(.5)}50%{transform:scaleY(1)}}
+
+/* ---------- works ---------- */
+.work{display:grid;grid-template-columns:auto 1fr auto;gap:2.5rem;align-items:center;padding:3.2rem 0;border-top:1px solid var(--border);transition:padding .4s;position:relative}
+.work:last-of-type{border-bottom:1px solid var(--border)}
+.work .idx{font-family:var(--mono);font-size:.8rem;color:var(--dim)}
+.work h3{font-family:var(--serif);font-weight:600;font-size:clamp(1.8rem,4.2vw,3.6rem);line-height:1.05;transition:color .35s,transform .45s cubic-bezier(.19,1,.22,1)}
+.work:hover h3{color:var(--terra);transform:translateX(14px)}
+.work .desc{color:var(--dim);font-size:.95rem;max-width:58ch;margin-top:.7rem}
+.work .tags{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1.1rem}
+.work .tag{font-family:var(--mono);font-size:.65rem;letter-spacing:.06em;color:var(--muted);border:1px solid var(--border);border-radius:99px;padding:.3rem .75rem}
+.work .kpi{text-align:right;font-family:var(--mono);font-size:.75rem;color:var(--muted);line-height:2}
+.work .kpi b{color:var(--terra);font-weight:500}
+@media(max-width:760px){.work{grid-template-columns:auto 1fr}.work .kpi{grid-column:2;text-align:left}}
+.more-note{margin-top:3rem;color:var(--dim);font-size:.95rem}
+.more-note em{font-family:var(--serif);font-style:italic;color:var(--muted)}
+
+/* ---------- about ---------- */
+.about-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:6vw}
+@media(max-width:900px){.about-grid{grid-template-columns:1fr}}
+.about-lead{font-family:var(--serif);font-weight:500;font-size:clamp(1.5rem,2.8vw,2.4rem);line-height:1.35}
+.about-lead em{font-style:italic;color:var(--terra)}
+.about-body{margin-top:2.5rem;color:var(--muted);max-width:60ch;font-size:1.05rem}
+.about-body p+p{margin-top:1.2rem}
+.about-body strong{color:var(--text);font-weight:500}
+.edu{margin-top:3rem;border-top:1px solid var(--border)}
+.edu .row{display:flex;justify-content:space-between;gap:2rem;padding:1.1rem 0;border-bottom:1px solid var(--border);font-size:.92rem}
+.edu .row span:first-child{color:var(--text)}
+.edu .row span:last-child{font-family:var(--mono);font-size:.72rem;color:var(--dim);white-space:nowrap}
+.skillset h4{font-family:var(--mono);font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:var(--terra);margin:2.4rem 0 1rem}
+.skillset h4:first-child{margin-top:0}
+.skillset .chipset .chip{cursor:default}
+
+/* ---------- experience ---------- */
+.xp{display:grid;grid-template-columns:auto 1fr;gap:3rem;padding:3rem 0;border-top:1px solid var(--border)}
+.xp:last-of-type{border-bottom:1px solid var(--border)}
+.xp .when{font-family:var(--mono);font-size:.75rem;color:var(--dim);white-space:nowrap;padding-top:.6rem}
+.xp .when b{color:var(--terra);font-weight:500}
+.xp h3{font-family:var(--serif);font-weight:600;font-size:clamp(1.5rem,2.8vw,2.3rem)}
+.xp .org{font-family:var(--mono);font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:.5rem 0 1.2rem}
+.xp ul{list-style:none;color:var(--muted);font-size:.98rem;max-width:70ch}
+.xp li{padding:.45rem 0 .45rem 1.6rem;position:relative}
+.xp li::before{content:"→";position:absolute;left:0;color:var(--terra);font-family:var(--mono);font-size:.8rem;top:.62rem}
+.xp li strong{color:var(--text);font-weight:500}
+@media(max-width:700px){.xp{grid-template-columns:1fr;gap:1rem}}
+
+/* ---------- contact ---------- */
+#contact{padding-bottom:0}
+.contact-big{font-family:var(--serif);font-weight:600;font-size:clamp(3rem,10vw,9rem);line-height:1;letter-spacing:-.02em;margin-bottom:6vh}
+.contact-big em{font-style:italic;color:transparent;-webkit-text-stroke:1.5px var(--terra)}
+.mail-link{display:inline-block;font-family:var(--mono);font-size:clamp(1rem,2.6vw,1.7rem);color:var(--text);border-bottom:1px solid var(--terra);padding-bottom:.35rem;transition:color .3s}
+.mail-link:hover{color:var(--terra)}
+.contact-meta{display:flex;flex-wrap:wrap;gap:3.5rem;margin-top:7vh;padding:3rem 0;border-top:1px solid var(--border)}
+.cm h5{font-family:var(--mono);font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);margin-bottom:.7rem}
+.cm a,.cm span{font-size:.98rem;color:var(--muted);transition:color .3s}
+.cm a:hover{color:var(--terra)}
+footer{display:flex;justify-content:space-between;flex-wrap:wrap;gap:1rem;padding:2rem 0 6rem;font-family:var(--mono);font-size:.7rem;letter-spacing:.08em;color:var(--dim)}
+footer .up{cursor:pointer;transition:color .3s}
+footer .up:hover{color:var(--terra)}
+</style>
+</head>
+<body>
+
+<div class="noise"></div>
+<div class="cursor-dot"></div>
+<div class="cursor-ring"></div>
+
+<div id="loader">
+  <div class="word"><span>Dakar, Senegal — <em id="loader-time"></em></span></div>
+  <div class="pct" id="pct">00</div>
+</div>
+
+<nav>
+  <a href="#hero" class="logo">M.Diallo</a>
+  <div class="links">
+    <a href="#demb">Featured</a>
+    <a href="#work">Work</a>
+    <a href="#about">About</a>
+    <a href="#experience">Experience</a>
+    <a href="#contact">Contact</a>
+  </div>
+</nav>
+
+<div class="avail"><span class="dot"></span>Open to remote & relocation</div>
+
+<!-- ================= HERO ================= -->
+<section id="hero">
+  <div class="wrap">
+    <div class="hero-eyebrow rv">Backend & DevOps Engineer — Dakar, Senegal</div>
+    <h1>
+      <span class="row"><span>Mohamed</span></span>
+      <span class="row"><span><em>Diallo</em></span></span>
+    </h1>
+    <div class="hero-bottom">
+      <p class="hero-desc rv">I architect <strong>distributed systems that serve 10,000+ people</strong> — and build products that tell the story of where I'm from. Founder of Jalo Enterprises. Currently crafting <strong>Demb</strong>.</p>
+      <div class="avatar-stage" id="avatar-stage"><span class="tag3d">He's watching your cursor</span></div>
+      <div class="scroll-cue rv">Scroll</div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= STATS ================= -->
+<div class="wrap">
+  <div class="stats">
+    <div class="stat rv"><b>10<i>k+</i></b><span>Users on systems I run</span></div>
+    <div class="stat rv"><b>65<i>%</i></b><span>API latency cut with Redis</span></div>
+    <div class="stat rv"><b>0</b><span>Security incidents since rollout</span></div>
+    <div class="stat rv"><b>1<i>st</i></b><span>Prize — ACE Hackathon 2024</span></div>
+  </div>
+</div>
+
+<div class="marquee" aria-hidden="true">
+  <div class="track">
+    <span>Backend Engineering</span><span>DevOps & CI/CD</span><span>System Design</span><span>Distributed Systems</span><span>API Security</span><span>AI & RAG</span><span>Mobile</span>
+    <span>Backend Engineering</span><span>DevOps & CI/CD</span><span>System Design</span><span>Distributed Systems</span><span>API Security</span><span>AI & RAG</span><span>Mobile</span>
+  </div>
+</div>
+
+<!-- ================= DEMB ================= -->
+<section id="demb">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-num">01</span>
+      <h2 class="sec-title">Featured <em>project</em></h2>
+    </div>
+    <div class="demb-grid">
+      <div>
+        <div class="demb-badge rv"><span class="dot"></span>In development — built with Claude</div>
+        <div class="demb-name rv">Demb<em>.</em></div>
+        <div class="demb-sub rv">"Yesterday" in Wolof — Senegalese history, brought to life</div>
+        <p class="demb-copy rv">A cultural mobile app that lets anyone explore the <strong>great figures of Senegalese history</strong> through rich narrative chapters, illustration-driven storytelling and <strong>multilingual audio narration</strong> — history you can listen to, in the languages people actually speak.</p>
+        <div class="demb-feats">
+          <div class="f rv"><span class="n">/01</span><div><h4>Historical figures library</h4><p>Curated profiles with chaptered, editorial reading experience</p></div></div>
+          <div class="f rv"><span class="n">/02</span><div><h4>Multilingual audio narration</h4><p>Streaming narration with a persistent player and language selector</p></div></div>
+          <div class="f rv"><span class="n">/03</span><div><h4>Living animations</h4><p>Rive & Lottie scenes that bring each era to life</p></div></div>
+          <div class="f rv"><span class="n">/04</span><div><h4>Premium content</h4><p>Subscription gating with RevenueCat, auth & profiles on Supabase</p></div></div>
+        </div>
+        <div class="chipset rv">
+          <span class="chip">Flutter</span><span class="chip">Dart</span><span class="chip">Supabase</span><span class="chip">RevenueCat</span><span class="chip">Rive</span><span class="chip">Lottie</span><span class="chip">GoRouter</span><span class="chip">just_audio</span>
+        </div>
+      </div>
+      <div class="phone-scene rv">
+        <div class="phone" id="phone">
+          <div class="screen">
+            <div class="sb"><span>9:41</span><span>●●●</span></div>
+            <div class="app-t">Demb</div>
+            <div class="app-s">Figures of History</div>
+            <div class="fig-card">
+              <div class="era">1920 — 1944 · Resistance</div>
+              <h5>Aline Sitoé Diatta</h5>
+              <p>The queen-priestess of Casamance who defied an empire…</p>
+            </div>
+            <div class="fig-card alt">
+              <div class="era">1853 — 1927 · Faith & Legacy</div>
+              <h5>Cheikh Ahmadou Bamba</h5>
+              <p>Founder of the Mouride brotherhood, exiled yet unbroken…</p>
+            </div>
+            <div class="audio-bar">
+              <div class="play"></div>
+              <div class="meta"><b>Chapter II — The Exile</b><span>Wolof · 04:32</span></div>
+              <div class="wavebars"><i></i><i></i><i></i><i></i><i></i></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= WORK ================= -->
+<section id="work">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-num">02</span>
+      <h2 class="sec-title">Selected <em>work</em></h2>
+    </div>
+
+    <a class="work rv" href="https://github.com/MouhameDiallo" target="_blank" rel="noopener">
+      <span class="idx">/01</span>
+      <div>
+        <h3>UCAD Mobile Services</h3>
+        <p class="desc">Official app of Université Cheikh Anta Diop, live on the Google Play Store. I architected and operate the distributed backend — student services, scheduling and campus access in one platform.</p>
+        <div class="tags"><span class="tag">FastAPI</span><span class="tag">Spring Boot</span><span class="tag">Firebase</span><span class="tag">Redis</span><span class="tag">Flutter</span><span class="tag">Kubernetes</span></div>
+      </div>
+      <div class="kpi"><b>10,000+</b> users<br><b>65%</b> faster APIs<br><b>2–5</b> releases / month</div>
+    </a>
+
+    <a class="work rv" href="https://github.com/MouhameDiallo" target="_blank" rel="noopener">
+      <span class="idx">/02</span>
+      <div>
+        <h3>JaloSchool</h3>
+        <p class="desc">Multi-tenant school management SaaS — billing, attendance, grading, communications. Designed, built, secured and hosted entirely solo under my startup, Jalo Enterprises.</p>
+        <div class="tags"><span class="tag">Angular</span><span class="tag">Tailwind</span><span class="tag">Flutter</span><span class="tag">Microservices</span><span class="tag">JWT / RBAC</span></div>
+      </div>
+      <div class="kpi"><b>Solo</b> — zero to prod<br><b>4.5</b> months<br><b>E2E</b> encrypted</div>
+    </a>
+
+    <a class="work rv" href="https://github.com/MouhameDiallo" target="_blank" rel="noopener">
+      <span class="idx">/03</span>
+      <div>
+        <h3>Campus Access Control</h3>
+        <p class="desc">Institutional microservices system securing entry points across the entire UCAD campus — REST APIs, Flutter clients, delivered in under six months and running in production.</p>
+        <div class="tags"><span class="tag">Microservices</span><span class="tag">REST</span><span class="tag">Flutter</span><span class="tag">Python</span></div>
+      </div>
+      <div class="kpi"><b>&lt;6</b> months to prod<br><b>Full</b> campus coverage</div>
+    </a>
+
+    <a class="work rv" href="https://github.com/MouhameDiallo" target="_blank" rel="noopener">
+      <span class="idx">/04</span>
+      <div>
+        <h3>RAG & AI Automation</h3>
+        <p class="desc">Retrieval-augmented pipelines and LLM chatbots automating internal operational workflows at DISI-UCAD — from document intelligence to conversational support.</p>
+        <div class="tags"><span class="tag">RAG</span><span class="tag">LLMs</span><span class="tag">Python</span><span class="tag">Fine-tuning</span></div>
+      </div>
+      <div class="kpi"><b>Internal</b> ops automated</div>
+    </a>
+
+    <p class="more-note rv">Also on the shelf — <em>an IVR voice server, an IoT smart home, real-time attendance analytics, and 2D / VR games in Unity & Flutter Flame.</em></p>
+  </div>
+</section>
+
+<!-- ================= ABOUT ================= -->
+<section id="about">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-num">03</span>
+      <h2 class="sec-title">About <em>me</em></h2>
+    </div>
+    <div class="about-grid">
+      <div>
+        <p class="about-lead rv">Engineer by training, <em>founder</em> by temperament — I like owning systems end to end: design, code, pipeline, production.</p>
+        <div class="about-body rv">
+          <p>I'm a backend & DevOps engineer based in Dakar with <strong>3+ years shipping production-grade systems</strong>. At DISI-UCAD I run the infrastructure behind the university's official app; at <strong>Jalo Enterprises</strong>, the EdTech startup I founded, I took a school-management SaaS from blank repo to paying clients — alone.</p>
+          <p>My range is deliberately wide: distributed architectures, CI/CD, API security hardened to OWASP standards, and applied AI (RAG, chatbots, fine-tuning). Lately I pair-build with <strong>Claude</strong> as an engineering copilot — Demb is the proof of concept.</p>
+          <p>Bilingual French / English. Open to remote roles and international relocation.</p>
+        </div>
+        <div class="edu rv">
+          <div class="row"><span>MSc Computer Science — <em>mention Bien</em></span><span>UCAD · 2024</span></div>
+          <div class="row"><span>BSc Computer Science — <em>mention Très Bien</em></span><span>UCAD · 2022</span></div>
+          <div class="row"><span>1st Prize — Africa Center of Excellence Hackathon</span><span>2024</span></div>
+        </div>
+      </div>
+      <div class="skillset rv">
+        <h4>Backend</h4>
+        <div class="chipset"><span class="chip">FastAPI</span><span class="chip">Spring Boot</span><span class="chip">Django</span><span class="chip">Node.js</span><span class="chip">Python</span><span class="chip">Firebase</span></div>
+        <h4>DevOps & Cloud</h4>
+        <div class="chipset"><span class="chip">Docker</span><span class="chip">Kubernetes</span><span class="chip">Jenkins</span><span class="chip">GitHub Actions</span><span class="chip">SonarQube</span><span class="chip">Linux</span></div>
+        <h4>Data</h4>
+        <div class="chipset"><span class="chip">PostgreSQL</span><span class="chip">Oracle</span><span class="chip">MongoDB</span><span class="chip">Redis</span><span class="chip">MySQL</span></div>
+        <h4>Frontend & Mobile</h4>
+        <div class="chipset"><span class="chip">Flutter</span><span class="chip">Angular</span><span class="chip">React</span><span class="chip">TypeScript</span><span class="chip">Tailwind</span></div>
+        <h4>Security</h4>
+        <div class="chipset"><span class="chip">OWASP</span><span class="chip">JWT / OAuth2</span><span class="chip">RBAC</span><span class="chip">OSINT</span><span class="chip">Audits</span></div>
+        <h4>AI & Data</h4>
+        <div class="chipset"><span class="chip">RAG</span><span class="chip">LLMs</span><span class="chip">Chatbots</span><span class="chip">Machine Learning</span><span class="chip">Fine-tuning</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= EXPERIENCE ================= -->
+<section id="experience">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-num">04</span>
+      <h2 class="sec-title">Experience</h2>
+    </div>
+
+    <div class="xp rv">
+      <div class="when"><b>Feb 2023</b> — Present</div>
+      <div>
+        <h3>Backend & DevOps Engineer</h3>
+        <div class="org">DISI — Université Cheikh Anta Diop · Dakar</div>
+        <ul>
+          <li>Architected the backend of <strong>UCAD Mobile Services</strong> (FastAPI + Spring Boot + Firebase) serving 10,000+ users on the Play Store</li>
+          <li>Cut API response times by <strong>65%</strong> with Redis caching on high-traffic endpoints</li>
+          <li>Ran CI/CD pipelines (Docker, K8s, Jenkins, GitHub Actions) — <strong>zero-downtime</strong> deployments, 2–5 releases/month</li>
+          <li>Hardened APIs to OWASP standards — <strong>0 security incidents</strong> since rollout</li>
+          <li>Deployed RAG pipelines & LLM chatbots automating internal workflows</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="xp rv">
+      <div class="when"><b>2024</b> — Present</div>
+      <div>
+        <h3>Founder & CEO</h3>
+        <div class="org">Jalo Enterprises — EdTech SaaS · Dakar</div>
+        <ul>
+          <li>Built and shipped <strong>JaloSchool</strong> solo — multi-tenant SaaS from architecture to production hosting, no external budget or team</li>
+          <li>End-to-end secure architecture: JWT, RBAC, encryption, hardened deployment</li>
+          <li>Own the full product cycle: system design, development, CI/CD, monitoring</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="xp rv">
+      <div class="when"><b>2024</b></div>
+      <div>
+        <h3>Software Developer</h3>
+        <div class="org">Daral Technologies · Dakar</div>
+        <ul>
+          <li>Delivered a complete business system — architecture, REST API, relational database, UI — meeting 100% of client requirements</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CONTACT ================= -->
+<section id="contact">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-num">05</span>
+      <h2 class="sec-title">Contact</h2>
+    </div>
+    <div class="contact-big rv">Let's build<br>something <em>lasting.</em></div>
+    <a class="mail-link rv" href="mailto:mohamed19.diallo@ucad.edu.sn">mohamed19.diallo@ucad.edu.sn</a>
+    <div class="contact-meta rv">
+      <div class="cm"><h5>Phone / WhatsApp</h5><a href="tel:+221773265912">+221 77 326 59 12</a></div>
+      <div class="cm"><h5>GitHub</h5><a href="https://github.com/MouhameDiallo" target="_blank" rel="noopener">github.com/MouhameDiallo</a></div>
+      <div class="cm"><h5>LinkedIn</h5><a href="https://linkedin.com/in/mohamed-diallo-947a00231" target="_blank" rel="noopener">linkedin.com/in/mohamed-diallo</a></div>
+      <div class="cm"><h5>Location</h5><span>Dakar, Senegal — UTC+0</span></div>
+    </div>
+    <footer>
+      <span>© 2026 Mohamed Diallo</span>
+      <span class="up" onclick="window.scrollTo({top:0,behavior:'smooth'})">Back to top ↑</span>
+    </footer>
+  </div>
+</section>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+/* ---------- preloader ---------- */
+document.getElementById('loader-time').textContent =
+  new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
+
+const pctEl = document.getElementById('pct');
+let p = 0;
+const tick = setInterval(()=>{
+  p += Math.floor(Math.random()*14)+4;
+  if(p>=100){p=100;clearInterval(tick);
+    setTimeout(()=>{
+      document.getElementById('loader').classList.add('done');
+      document.body.style.overflow='auto';
+      if(window.startIntro) window.startIntro();
+    },250);
+  }
+  pctEl.textContent = String(p).padStart(2,'0');
+},90);
+document.body.style.overflow='hidden';
+
+/* ---------- custom cursor ---------- */
+const dot = document.querySelector('.cursor-dot');
+const ring = document.querySelector('.cursor-ring');
+let mx=0,my=0,rx=0,ry=0;
+window.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;
+  dot.style.left=mx+'px';dot.style.top=my+'px';});
+(function follow(){rx+=(mx-rx)*.14;ry+=(my-ry)*.14;
+  ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(follow);})();
+document.querySelectorAll('a,.chip,.up,.work').forEach(el=>{
+  el.addEventListener('mouseenter',()=>ring.classList.add('is-hover'));
+  el.addEventListener('mouseleave',()=>ring.classList.remove('is-hover'));
+});
+
+/* ---------- GSAP (with offline fallback) ---------- */
+if(typeof gsap==='undefined'){
+  document.querySelectorAll('.rv').forEach(el=>{el.style.opacity=1;el.style.transform='none';});
+  window.startIntro=()=>{};
+}else{
+gsap.registerPlugin(ScrollTrigger);
+
+window.startIntro = function(){
+  gsap.timeline()
+    .from('h1 .row>span',{yPercent:115,duration:1.2,stagger:.12,ease:'power4.out'})
+    .to('#hero .rv',{opacity:1,y:0,duration:.9,stagger:.12,ease:'power3.out'},'-=.6');
+}
+
+/* scroll reveals for everything outside hero */
+document.querySelectorAll('section:not(#hero) .rv, .stats .rv').forEach(el=>{
+  gsap.to(el,{opacity:1,y:0,duration:1,ease:'power3.out',
+    scrollTrigger:{trigger:el,start:'top 88%'}});
+});
+
+/* section titles: subtle clip reveal */
+gsap.utils.toArray('.sec-title').forEach(t=>{
+  gsap.from(t,{yPercent:60,opacity:0,duration:1,ease:'power4.out',
+    scrollTrigger:{trigger:t,start:'top 90%'}});
+});
+
+/* phone parallax + float */
+gsap.to('#phone',{y:-40,scrollTrigger:{trigger:'#demb',start:'top bottom',end:'bottom top',scrub:1}});
+gsap.to('#phone',{rotateY:6,duration:5,yoyo:true,repeat:-1,ease:'sine.inOut'});
+
+/* big contact text slight parallax */
+gsap.from('.contact-big',{yPercent:25,scrollTrigger:{trigger:'#contact',start:'top bottom',end:'top 30%',scrub:1}});
+
+/* marquee speeds up slightly on scroll */
+let mq = document.querySelector('.marquee .track');
+ScrollTrigger.create({
+  trigger:'.marquee',start:'top bottom',end:'bottom top',
+  onUpdate:self=>{mq.style.animationDuration = (28 - Math.abs(self.getVelocity())/400) + 's';}
+});
+}
+</script>
+
+<script>
+/* ================= 3D AVATAR — follows mouse movement ================= */
+(function(){
+  const stage = document.getElementById('avatar-stage');
+  if(!stage) return;
+
+  /* ---- 2D fallback: CSS face whose pupils follow the mouse ---- */
+  function fallback2D(){
+    stage.insertAdjacentHTML('afterbegin',
+      '<div class="av2d"><div class="face"><div class="hairc"></div>'+
+      '<div class="eye l"><div class="pupil"></div></div>'+
+      '<div class="eye r"><div class="pupil"></div></div>'+
+      '<div class="bridge2"></div><div class="smile2"></div></div></div>');
+    const pupils = stage.querySelectorAll('.pupil');
+    window.addEventListener('mousemove', e=>{
+      const nx = (e.clientX/window.innerWidth)*2-1, ny = (e.clientY/window.innerHeight)*2-1;
+      pupils.forEach(p=>{ p.style.transform = 'translate('+(nx*7)+'px,'+(ny*5)+'px)'; });
+    });
+  }
+
+  if(typeof THREE==='undefined'){ fallback2D(); return; }
+
+  let renderer;
+  try{
+    renderer = new THREE.WebGLRenderer({alpha:true, antialias:true});
+  }catch(err){ fallback2D(); return; }
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(35, 1, .1, 100);
+  camera.position.set(0, .2, 8.2);
+
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  stage.appendChild(renderer.domElement);
+
+  function fit(){
+    const s = stage.clientWidth || 320;
+    renderer.setSize(s, s);
+    camera.aspect = 1; camera.updateProjectionMatrix();
+  }
+  fit(); window.addEventListener('resize', fit);
+  window.addEventListener('load', fit);
+
+  /* lights — warm key, terracotta rim */
+  scene.add(new THREE.AmbientLight(0xffffff, .5));
+  const key = new THREE.DirectionalLight(0xfff1e0, .95); key.position.set(3,4,5); scene.add(key);
+  const rim = new THREE.PointLight(0xe4552b, 1.1, 30); rim.position.set(-4,-1,3); scene.add(rim);
+  const back = new THREE.PointLight(0xd97c1a, .55, 30); back.position.set(4,2,-3); scene.add(back);
+
+  /* materials */
+  const skin   = new THREE.MeshStandardMaterial({color:0x6f4326, roughness:.55, metalness:.08});
+  const hairM  = new THREE.MeshStandardMaterial({color:0x161210, roughness:.95});
+  const white  = new THREE.MeshStandardMaterial({color:0xf5f0ea, roughness:.25});
+  const dark   = new THREE.MeshStandardMaterial({color:0x14100d, roughness:.3});
+  const terra  = new THREE.MeshStandardMaterial({color:0xe4552b, roughness:.35, metalness:.55});
+  const shirt  = new THREE.MeshStandardMaterial({color:0xc2410c, roughness:.75});
+
+  const avatar = new THREE.Group();
+  const head = new THREE.Group();
+
+  /* skull */
+  const skull = new THREE.Mesh(new THREE.SphereGeometry(1.15, 48, 48), skin);
+  skull.scale.set(1, 1.12, 1.02); head.add(skull);
+
+  /* hair cap */
+  const hair = new THREE.Mesh(new THREE.SphereGeometry(1.19, 48, 24, 0, Math.PI*2, 0, Math.PI*.52), hairM);
+  hair.position.y = .12; hair.scale.set(1, 1.08, 1); head.add(hair);
+
+  /* ears */
+  [-1,1].forEach(s=>{
+    const ear = new THREE.Mesh(new THREE.SphereGeometry(.17, 24, 24), skin);
+    ear.position.set(1.13*s, -.02, 0); ear.scale.set(.55, 1, .8); head.add(ear);
+  });
+
+  /* nose */
+  const nose = new THREE.Mesh(new THREE.SphereGeometry(.17, 24, 24), skin);
+  nose.position.set(0, -.22, 1.06); nose.scale.set(.85, 1.1, .9); head.add(nose);
+
+  /* eyes (groups so pupils can over-track) */
+  const eyes = [];
+  [-1,1].forEach(s=>{
+    const eye = new THREE.Group();
+    eye.position.set(.42*s, .18, .88);
+    const ball = new THREE.Mesh(new THREE.SphereGeometry(.16, 24, 24), white);
+    const pupil = new THREE.Mesh(new THREE.SphereGeometry(.07, 16, 16), dark);
+    pupil.position.z = .12;
+    eye.add(ball); eye.add(pupil);
+    head.add(eye); eyes.push(eye);
+  });
+
+  /* brows */
+  [-1,1].forEach(s=>{
+    const brow = new THREE.Mesh(new THREE.BoxGeometry(.36, .06, .07), hairM);
+    brow.position.set(.42*s, .48, .97); brow.rotation.z = -.12*s; head.add(brow);
+  });
+
+  /* glasses — terracotta rings + bridge */
+  [-1,1].forEach(s=>{
+    const ring = new THREE.Mesh(new THREE.TorusGeometry(.27, .028, 12, 40), terra);
+    ring.position.set(.42*s, .18, 1.0); head.add(ring);
+  });
+  const bridge = new THREE.Mesh(new THREE.CylinderGeometry(.024, .024, .3, 12), terra);
+  bridge.rotation.z = Math.PI/2; bridge.position.set(0, .18, 1.0); head.add(bridge);
+
+  /* smile — torus arc centered at the bottom */
+  const smile = new THREE.Mesh(new THREE.TorusGeometry(.3, .035, 12, 32, Math.PI*.6), dark);
+  smile.rotation.z = Math.PI*1.2;
+  smile.position.set(0, -.48, .92); smile.scale.set(1, .8, .5); head.add(smile);
+
+  head.position.y = .55; avatar.add(head);
+
+  /* neck + shoulders */
+  const neck = new THREE.Mesh(new THREE.CylinderGeometry(.3, .36, .55, 24), skin);
+  neck.position.y = -.72; avatar.add(neck);
+  const torso = new THREE.Mesh(new THREE.SphereGeometry(1.05, 32, 32), shirt);
+  torso.scale.set(1.5, .62, .85); torso.position.y = -1.5; avatar.add(torso);
+
+  avatar.position.y = .18;
+  scene.add(avatar);
+
+  /* ----- mouse tracking (whole window, not just hover) ----- */
+  let tx = 0, ty = 0, hasMouse = false, lastMove = 0;
+  window.addEventListener('mousemove', e=>{
+    hasMouse = true; lastMove = performance.now();
+    tx = (e.clientX / window.innerWidth) * 2 - 1;
+    ty = (e.clientY / window.innerHeight) * 2 - 1;
+  });
+
+  const clock = new THREE.Clock();
+  function animate(){
+    requestAnimationFrame(animate);
+    const t = clock.getElapsedTime();
+
+    /* idle wander when no mouse activity for 3s (mobile / idle) */
+    let gx = tx, gy = ty;
+    if(!hasMouse || performance.now() - lastMove > 3000){
+      gx = Math.sin(t*.5)*.5; gy = Math.sin(t*.33)*.25;
+    }
+
+    /* head turns toward cursor, body follows a little, pupils over-track */
+    head.rotation.y += ((gx*.65) - head.rotation.y) * .07;
+    head.rotation.x += ((gy*.38) - head.rotation.x) * .07;
+    avatar.rotation.y += ((gx*.18) - avatar.rotation.y) * .045;
+    eyes.forEach(eye=>{
+      eye.rotation.y += ((gx*.35) - eye.rotation.y) * .12;
+      eye.rotation.x += ((gy*.25) - eye.rotation.x) * .12;
+    });
+
+    /* gentle breathing */
+    avatar.position.y = .18 + Math.sin(t*1.6)*.045;
+
+    renderer.render(scene, camera);
+  }
+  animate();
+})();
+</script>
+</body>
+</html>
