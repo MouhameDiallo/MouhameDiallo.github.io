@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MOSAIC — La langue des signes sénégalaise, enfin comprise</title>
+<meta name="description" content="MOSAIC traduit la langue des signes sénégalaise pour que les personnes sourdes, lettrées ou non, soient comprises au guichet, à l'hôpital, à l'école.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<a class="skip" href="#main"><span lang="fr">Aller au contenu</span><span lang="en">Skip to content</span></a>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="MOSAIC"><i aria-hidden="true"><b></b><b></b><b></b><b></b></i>MOSAIC</a>
+    <nav aria-label="Navigation">
+      <a class="hide-s" href="#barriere"><span lang="fr">La barrière</span><span lang="en">The barrier</span></a>
+      <a class="hide-s" href="#solution"><span lang="fr">La solution</span><span lang="en">The solution</span></a>
+      <a class="hide-s" href="#modele"><span lang="fr">Modèle</span><span lang="en">Business</span></a>
+      <a href="#contact">Contact</a>
+      <div class="langs" role="group" aria-label="Langue / Language">
+        <button type="button" data-set-lang="fr" aria-pressed="true">FR</button>
+        <button type="button" data-set-lang="en" aria-pressed="false">EN</button>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+<!-- HERO -->
+<section class="hero" id="top">
+  <div class="wrap grid">
+    <div>
+      <h1><span lang="fr">Imaginez ne rien entendre. Et ne pas savoir lire.</span><span lang="en">Imagine hearing nothing. And not being able to read.</span></h1>
+      <p class="lead"><span lang="fr">À la mairie, à l'hôpital, au commissariat : personne ne vous comprend, et rien d'écrit ne vous aide. MOSAIC traduit la langue des signes sénégalaise pour que chaque personne sourde soit comprise, qu'elle sache lire ou non.</span><span lang="en">At the town hall, the hospital, the police station: nobody understands you, and nothing written helps. MOSAIC translates Senegalese Sign Language so every Deaf person is understood, whether they can read or not.</span></p>
+      <div class="cta">
+        <a class="btn sun" href="#barriere"><span lang="fr">Vivre une visite au guichet</span><span lang="en">Live a visit to the counter</span></a>
+        <a class="btn alt" href="#demo"><span lang="fr">Essayer la démo</span><span lang="en">Try the demo</span></a>
+      </div>
+    </div>
+    <div class="stage">
+      <span class="tag"><span lang="fr">Capture réelle · prototype</span><span lang="en">Real capture · prototype</span></span>
+      <canvas id="heroCanvas" role="img" aria-label="Squelette animé d'une personne qui signe / Animated skeleton of a person signing"></canvas>
+      <div class="out">
+        <div class="word" id="heroWord" aria-live="polite"></div>
+        <div class="src"><span lang="fr">Signe → texte, voix<br>et pictogramme</span><span lang="en">Sign → text, voice<br>and pictogram</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROBLEM -->
+<section id="probleme">
+  <div class="wrap">
+    <p class="kicker"><span lang="fr">Le problème</span><span lang="en">The problem</span></p>
+    <h2><span lang="fr">Un angle mort que les chiffres ne montrent pas</span><span lang="en">A blind spot the numbers do not show</span></h2>
+    <div class="stats" id="stats">
+      <div class="stat"><div class="n" data-count="40" data-suffix=" M">40 M</div><p><span lang="fr">de personnes vivent avec une perte auditive invalidante dans la Région Afrique de l'OMS.</span><span lang="en">people live with disabling hearing loss in the WHO African Region.</span></p></div>
+      <div class="stat"><div class="n" data-count="97" data-suffix=" M">97 M</div><p><span lang="fr">attendues en 2050 : plus du double d'aujourd'hui.</span><span lang="en">projected by 2050: more than double today.</span></p></div>
+      <div class="stat"><div class="n" data-count="27.1" data-dec="1" data-prefix="$" data-suffix=" Md"><span lang="fr">27,1 Md$</span><span lang="en">$27.1B</span></div><p><span lang="fr">de coût économique annuel estimé d'une perte auditive non prise en charge en Afrique.</span><span lang="en">estimated yearly economic cost of unaddressed hearing loss in Africa.</span></p></div>
+      <div class="stat"><div class="n" data-count="14" data-prefix="+" data-suffix=" pts">+14 pts</div><p><span lang="fr">de probabilité de ne jamais aller à l'école pour un enfant qui a des difficultés de communication.</span><span lang="en">higher likelihood of never attending school for a child with communication difficulty.</span></p></div>
+    </div>
+    <div class="insight">
+      <div class="box hl">
+        <h3><span lang="fr">Le sous-titre ne répond pas à la question</span><span lang="en">Captions do not answer the question</span></h3>
+        <p><span lang="fr">La langue des signes est la première langue de nombreuses personnes sourdes. Le français écrit vient après, quand l'école a existé. Beaucoup de solutions « d'accessibilité » supposent pourtant que la personne lit : sous-titres, applications de texte, formulaires.</span><span lang="en">Sign language is the first language of many Deaf people. Written French comes second, when school was possible. Yet many “accessibility” tools assume the person reads: captions, text apps, forms.</span></p>
+      </div>
+      <div class="box">
+        <h3><span lang="fr">Et la langue des signes n'est pas universelle</span><span lang="en">And sign language is not universal</span></h3>
+        <p><span lang="fr">L'Afrique compte des dizaines de langues des signes, encore peu documentées. Le Sénégal n'a aucune ressource de données publique pour la sienne : même la recherche régionale sur les langues des signes africaines la laisse de côté, faute de données.</span><span lang="en">Africa has dozens of sign languages, still little documented. Senegal has no public dataset for its own: even regional research on African sign languages leaves it out for lack of data.</span></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SIMULATOR -->
+<section class="dark" id="barriere">
+  <div class="wrap">
+    <p class="kicker"><span lang="fr">À votre tour</span><span lang="en">Your turn</span></p>
+    <h2><span lang="fr">Vous êtes au guichet de l'état civil</span><span lang="en">You are at the civil registry counter</span></h2>
+    <p class="lead"><span lang="fr">Parcourez les trois moments d'une visite. Basculez l'interrupteur pour voir la même scène selon que vous lisez le français ou non.</span><span lang="en">Go through the three moments of a visit. Flip the switch to see the same scene whether you read French or not.</span></p>
+    <div class="sim">
+      <div class="sim-top">
+        <div class="tabs" role="tablist" aria-label="Étapes / Steps" id="simTabs">
+          <button role="tab" aria-selected="true" data-step="0" id="tab0" aria-controls="simBody"></button>
+          <button role="tab" aria-selected="false" data-step="1" id="tab1" aria-controls="simBody"></button>
+          <button role="tab" aria-selected="false" data-step="2" id="tab2" aria-controls="simBody"></button>
+        </div>
+        <label class="switch"><input type="checkbox" id="canRead" checked><span class="track" aria-hidden="true"></span><span id="readLabel"></span></label>
+      </div>
+      <div class="sim-body" id="simBody" role="tabpanel" aria-live="polite" tabindex="0"></div>
+    </div>
+  </div>
+</section>
+
+<!-- WHERE -->
+<section id="terrain">
+  <div class="wrap">
+    <p class="kicker"><span lang="fr">Sur le terrain, à Dakar</span><span lang="en">On the ground, in Dakar</span></p>
+    <h2><span lang="fr">Ce que vivent les élèves du Centre Verbo-Tonal</span><span lang="en">What students at the Centre Verbo-Tonal live through</span></h2>
+    <div class="cards">
+      <div class="card"><h3><span lang="fr">Guichets administratifs</span><span lang="en">Administrative counters</span></h3><p><span lang="fr">Presque aucune mairie ni aucun commissariat n'a de personnel formé à la langue des signes. Sans accompagnant, remplir un document devient une épreuve.</span><span lang="en">Almost no town hall or police station has staff trained in sign language. Without a companion, filling in a document becomes an ordeal.</span></p></div>
+      <div class="card"><h3><span lang="fr">Santé</span><span lang="en">Healthcare</span></h3><p><span lang="fr">Les hôpitaux publics manquent d'interprètes, ce qui complique consultations et diagnostics. Les prothèses auditives restent chères et peu subventionnées.</span><span lang="en">Public hospitals lack interpreters, complicating consultations and diagnoses. Hearing aids remain expensive and poorly subsidised.</span></p></div>
+      <div class="card"><h3><span lang="fr">Vie quotidienne</span><span lang="en">Daily life</span></h3><p><span lang="fr">Pas de signalétique visuelle dans les transports. Les campagnes d'information publique et d'élections n'ont souvent aucun support adapté.</span><span lang="en">No visual signage on public transport. Public-information and election campaigns often have no adapted material.</span></p></div>
+      <div class="card"><h3><span lang="fr">Emploi</span><span lang="en">Employment</span></h3><p><span lang="fr">Les concours de la fonction publique ne prévoient aucun aménagement, ce qui freine l'insertion professionnelle après l'école.</span><span lang="en">Civil-service entrance exams offer no accommodation, which limits professional integration after school.</span></p></div>
+    </div>
+    <blockquote class="quote"><span lang="fr">« Pour que l'inclusion ne soit plus un mot vide, l'adaptation de nos services publics est urgente. »</span><span lang="en">“For inclusion to stop being an empty word, adapting our public services is urgent.”</span><small><span lang="fr">Témoignage recueilli par l'équipe au Centre Verbo-Tonal de Dakar.</span><span lang="en">Testimony gathered by the team at the Centre Verbo-Tonal in Dakar.</span></small></blockquote>
+  </div>
+</section>
+
+<!-- COMPARISON -->
+<section id="existant" style="padding-top:0">
+  <div class="wrap">
+    <p class="kicker"><span lang="fr">Pourquoi rien ne suffit aujourd'hui</span><span lang="en">Why nothing is enough today</span></p>
+    <h2><span lang="fr">Choisissez qui vous voulez aider</span><span lang="en">Pick the person you want to help</span></h2>
+    <div class="persona" role="group" aria-label="Profil / Profile">
+      <button type="button" data-persona="reads" aria-pressed="false"><span lang="fr">Personne sourde qui lit un peu</span><span lang="en">Deaf person who reads a little</span></button>
+      <button type="button" data-persona="noread" aria-pressed="true"><span lang="fr">Personne sourde qui ne lit pas</span><span lang="en">Deaf person who does not read</span></button>
+    </div>
+    <div class="cmp" id="cmp" aria-live="polite"></div>
+    <p class="note"><span lang="fr">Appréciation qualitative de l'équipe, à confirmer par des études de terrain avec les utilisateurs. MOSAIC couvre aujourd'hui un vocabulaire limité : l'interprète humain reste le recours pour tout le reste.</span><span lang="en">Qualitative assessment by the team, to be confirmed by field studies with users. MOSAIC covers a limited vocabulary today: the human interpreter remains the fallback for everything else.</span></p>
+  </div>
+</section>
+
+<!-- DEMO -->
+<section class="dark" id="demo">
+  <div class="wrap">
+    <p class="kicker"><span lang="fr">La solution</span><span lang="en">The solution</span></p>
+    <h2 id="solution"><span lang="fr">Du signe à une réponse que chacun comprend</span><span lang="en">From a sign to an answer everyone understands</span></h2>
+    <p class="lead"><span lang="fr">Ce que vous voyez est une vraie captation : le squelette des mains et du corps, sans le visage ni la vidéo. Choisissez un signe.</span><span lang="en">What you see is a real recording: the skeleton of hands and body, without the face or the video. Choose a sign.</span></p>
+    <div class="demo">
+      <div>
+        <div class="stage" style="max-width:520px">
+          <canvas id="demoCanvas" role="img" aria-label="Squelette animé du signe choisi / Animated skeleton of the chosen sign"></canvas>
+        </div>
+        <div class="ctrl">
+          <button class="btn alt" id="replay" type="button"><span lang="fr">Rejouer</span><span lang="en">Replay</span></button>
+          <label><span lang="fr">Vitesse</span><span lang="en">Speed</span> <input type="range" id="speed" min="0.25" max="1.5" step="0.25" value="1"></label>
+        </div>
+      </div>
+      <div>
+        <h3 style="color:#fff"><span lang="fr">Signe reconnu</span><span lang="en">Recognised sign</span></h3>
+        <div class="signs" id="signBtns" role="group" aria-label="Signes / Signs"></div>
+        <div class="result" aria-live="polite">
+          <div class="pict" id="dPict" aria-hidden="true"></div>
+          <div class="big" id="dText"></div>
+          <p id="dHint" style="margin:.4em 0 0"></p>
+          <div class="ctrl"><button class="btn sun" id="speak" type="button"><span lang="fr">Dire à voix haute</span><span lang="en">Say it aloud</span></button></div>
+        </div>
+        <div class="honest"><strong><span lang="fr">Soyons clairs.</span><span lang="en">To be clear.</span></strong> <span lang="fr">Ces captures viennent du prototype. Elles ne sont pas encore validées par des signeurs natifs : c'est précisément l'étape que ce financement permet, avec FENASSEN.</span><span lang="en">These captures come from the prototype. They are not yet validated by native signers: this is exactly the step this funding makes possible, with FENASSEN.</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PIPELINE -->
+<section id="technologie">
+  <div class="wrap">
+    <p class="kicker"><span lang="fr">Comment ça marche</span><span lang="en">How it works</span></p>
+    <h2><span lang="fr">Un squelette plutôt qu'une vidéo</span><span lang="en">A skeleton, not a video</span></h2>
+    <p class="lead"><span lang="fr">MOSAIC ne regarde pas des images : il lit la position des mains, du corps et du visage. C'est plus léger, plus respectueux de la vie privée, et ça peut tourner sur un téléphone.</span><span lang="en">MOSAIC does not analyse pictures: it reads the position of hands, body and face. It is lighter, more private, and can run on a phone.</span></p>
+    <div class="pipe" id="pipe"></div>
+    <div class="pipe-detail" id="pipeDetail" aria-live="polite"></div>
+  </div>
+</section>
+
+<!-- STATUS -->
+<section style="padding-top:0" id="avancement">
+  <div class="wrap">
+    <p class="kicker"><span lang="fr">Où nous en sommes</span><span lang="en">Where we are</span></p>
+    <h2><span lang="fr">Un prototype qui tourne, et ce qu'il reste à prouver</span><span lang="en">A working prototype, and what is left to prove</span></h2>
+    <div class="status">
+      <div class="card yes"><h3><span lang="fr">Déjà fait</span><span lang="en">Done</span></h3><p><span lang="fr">Chaîne complète construite par une seule personne : collecte, entraînement, test, démonstration. Validée de bout en bout sur la langue des signes américaine, avec des résultats acceptables. Présentée devant un jury académique et à la conférence Afretec.</span><span lang="en">A full pipeline built by one person: collection, training, testing, demo. Validated end to end on American Sign Language with acceptable results. Presented to an academic jury and at the Afretec conference.</span></p></div>
+      <div class="card yes"><h3><span lang="fr">Ancrage terrain</span><span lang="en">Field roots</span></h3><p><span lang="fr">Collaboration avec la Fédération Nationale des Sourds du Sénégal (FENASSEN) et le Centre Verbo-Tonal de Fann à Dakar, pour construire la collecte de données avec des signeurs natifs.</span><span lang="en">Collaboration with the Senegalese National Federation of the Deaf (FENASSEN) and the Centre Verbo-Tonal in Fann, Dakar, to build data collection with native signers.</span></p></div>
+      <div class="card todo"><h3><span lang="fr">À financer</span><span lang="en">To fund</span></h3><p><span lang="fr">Le jeu de données en langue des signes sénégalaise, filmé avec des signeurs natifs et validé par la communauté. Sans lui, la traduction reste limitée. Les signes de la démo sont des captures de prototype.</span><span lang="en">The Senegalese Sign Language dataset, recorded with native signers and validated by the community. Without it, translation stays limited. The demo signs are prototype captures.</span></p></div>
+    </div>
+    <h3 style="margin-top:44px"><span lang="fr">Feuille de route</span><span lang="en">Roadmap</span></h3>
+    <div class="road" id="road"></div>
+  </div>
+</section>
+
+<!-- BUSINESS -->
+<section class="dark" id="modele">
+  <div class="wrap">
+    <p class="kicker"><span lang="fr">Modèle économique</span><span lang="en">Business model</span></p>
+    <h2><span lang="fr">Deux sources de revenus, dimensionnées pour le Sénégal</span><span lang="en">Two revenue lines, sized for Senegal</span></h2>
+    <div class="biz">
+      <div class="panel" style="color:var(--ink)">
+        <h3><span lang="fr">Simulateur de revenus annuels</span><span lang="en">Yearly revenue simulator</span></h3>
+        <div class="field"><label for="sCounters"><span><span lang="fr">Guichets équipés</span><span lang="en">Equipped counters</span></span><output id="oCounters"></output></label><input type="range" id="sCounters" min="1" max="60" value="10"></div>
+        <div class="field"><label for="sLicense"><span><span lang="fr">Licence par site et par an</span><span lang="en">License per site per year</span></span><output id="oLicense"></output></label><input type="range" id="sLicense" min="1500" max="9000" step="500" value="4000"></div>
+        <div class="field"><label for="sSubs"><span><span lang="fr">Abonnés individuels</span><span lang="en">Individual subscribers</span></span><output id="oSubs"></output></label><input type="range" id="sSubs" min="0" max="3000" step="50" value="500"></div>
+        <div class="total" id="oTotal"></div>
+        <div class="split" aria-hidden="true"><i id="splitA" style="background:var(--indigo)"></i><i id="splitB" style="background:var(--saffron)"></i></div>
+        <div class="lbl" id="oSplit"></div>
+        <p class="note"><span lang="fr">Simulation illustrative, pas une prévision. Les prix seront affinés avec les premiers sites pilotes et utilisateurs.</span><span lang="en">Illustrative simulation, not a forecast. Prices will be refined with the first pilot sites and users.</span></p>
+      </div>
+      <div>
+        <div class="price" style="color:var(--ink)">
+          <div><span class="lbl"><span lang="fr">Individuel</span><span lang="en">Individual</span></span><b><span lang="fr">10 $ / mois</span><span lang="en">$10 / month</span></b></div>
+          <div><span class="lbl"><span lang="fr">Institutionnel</span><span lang="en">Institutional</span></span><b><span lang="fr">1 500 à 9 000 $ / an</span><span lang="en">$1,500–9,000 / year</span></b></div>
+        </div>
+        <p style="margin-top:18px"><span lang="fr"><strong>Individuel :</strong> traduction en temps réel dans l'application, mode hors-ligne, fonctions prioritaires, pour les personnes sourdes, leurs familles et accompagnants.</span><span lang="en"><strong>Individual:</strong> real-time translation in the app, offline mode, priority features, for Deaf users, families and companions.</span></p>
+        <p><span lang="fr"><strong>Institutionnel :</strong> une licence annuelle par guichet, avec mises à jour, recours à l'interprète humain, statistiques et formation. Plus de 36 hôpitaux publics sont déjà des clients potentiels au Sénégal. Écoles, administrations et police suivent.</span><span lang="en"><strong>Institutional:</strong> one yearly license per counter, with updates, human-interpreter fallback, analytics and onboarding. Over 36 public hospitals alone are potential customers in Senegal. Schools, administrations and police follow.</span></p>
+        <p><span lang="fr">Trajectoire sur trois ans : un guichet pilote financé par subvention à Dakar, puis des licences payantes dans Dakar, puis un déploiement national.</span><span lang="en">Three-year path: one grant-funded pilot counter in Dakar, then paid licenses across Dakar, then national rollout.</span></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ASK -->
+<section id="demande">
+  <div class="wrap">
+    <p class="kicker"><span lang="fr">Ce que nous demandons</span><span lang="en">The ask</span></p>
+    <h2><span lang="fr">135 000 $ pour un premier guichet à Dakar</span><span lang="en">$135,000 for a first counter in Dakar</span></h2>
+    <p class="lead"><span lang="fr">Compléter le jeu de données LSS et lancer le pilote avec le Centre Verbo-Tonal et FENASSEN. Ensuite, environ 310 000 $ sur la première année pour être prêt à passer à cinq guichets, soit environ 2 000 $ par guichet supplémentaire une fois la plateforme construite.</span><span lang="en">Complete the LSS dataset and launch the pilot with the Centre Verbo-Tonal and FENASSEN. Then about $310,000 over year one to be ready for five counters, around $2,000 per extra counter once the platform is built.</span></p>
+    <div class="biz" style="margin-top:26px">
+      <div class="panel" id="budget"></div>
+      <div class="panel">
+        <h3><span lang="fr">Ce que le pilote doit démontrer</span><span lang="en">What the pilot must prove</span></h3>
+        <p><span lang="fr">Notre indicateur principal : la part des échanges essentiels (se présenter, demander un document, décrire un symptôme) menés à bien et sans accompagnant.</span><span lang="en">Our main metric: the share of essential exchanges (introducing yourself, requesting a document, describing a symptom) completed independently and correctly.</span></p>
+        <p><span lang="fr">Garde-fous : recours à l'interprète humain pour les écoles, hôpitaux et commissariats, protection de la vie privée dès la conception, et co-conception avec des signeurs natifs contre les erreurs de traduction et les biais.</span><span lang="en">Safeguards: human-interpreter fallback for schools, hospitals and police, privacy by design, and co-design with native signers against mistranslation and bias.</span></p>
+        <p style="margin-bottom:0"><span lang="fr">Si ça marche : la même architecture s'applique à la quarantaine d'autres langues des signes africaines peu documentées, à commencer par le Mali et le Ghana.</span><span lang="en">If it works: the same architecture applies to the forty or so other little-documented African sign languages, starting with Mali and Ghana.</span></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="dark" id="contact">
+  <div class="wrap">
+    <p class="kicker">Contact</p>
+    <h2><span lang="fr">Parlons-en</span><span lang="en">Let's talk</span></h2>
+    <div class="contact">
+      <div>
+        <div class="item"><b><span lang="fr">Porteur du projet</span><span lang="en">Project lead</span></b><span class="big">Mohamed Diallo</span><br><span lang="fr">Ingénieur IT, DISI-UCAD, Dakar. Trois ans d'ingénierie backend et DevOps en production (plus de 10 000 utilisateurs) et fondateur de JaloSchool, un SaaS éducatif déployé sans financement externe.</span><span lang="en">IT engineer, DISI-UCAD, Dakar. Three years of backend and DevOps engineering in production (10,000+ users) and founder of JaloSchool, an EdTech SaaS deployed without outside funding.</span></div>
+        <div class="item"><b>Email</b><a class="big" href="mailto:mohamed19.diallo@ucad.edu.sn">mohamed19.diallo@ucad.edu.sn</a></div>
+        <div class="item"><b><span lang="fr">Téléphone</span><span lang="en">Phone</span></b><a class="big" href="tel:+221773265912">+221 77 326 59 12</a></div>
+      </div>
+      <form class="msg" id="msgForm">
+        <label><span lang="fr">Votre nom</span><span lang="en">Your name</span><input name="n" required autocomplete="name"></label>
+        <label><span lang="fr">Votre structure</span><span lang="en">Your organisation</span><input name="o" autocomplete="organization"></label>
+        <label><span lang="fr">Message</span><span lang="en">Message</span><textarea name="m" required></textarea></label>
+        <button class="btn sun" type="submit"><span lang="fr">Copier le message</span><span lang="en">Copy the message</span></button>
+        <div class="toast" id="toast" role="status"></div>
+        <div class="lbl" style="color:#9FB0C8"><span lang="fr">Ce formulaire n'envoie rien : il prépare votre message à coller dans un email adressé à Mohamed.</span><span lang="en">This form sends nothing: it prepares your message to paste into an email to Mohamed.</span></div>
+      </form>
+    </div>
+  </div>
+</section>
+</main>
+<footer><div class="wrap"><span lang="fr">MOSAIC · Multimodal Open System for Accessible &amp; Inclusive Communication · Dakar, Sénégal</span><span lang="en">MOSAIC · Multimodal Open System for Accessible &amp; Inclusive Communication · Dakar, Senegal</span></div></footer>
+
+<script src="assets/signs.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
